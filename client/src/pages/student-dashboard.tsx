@@ -23,6 +23,9 @@ export default function StudentDashboard() {
     queryKey: ["/api/slots/available"],
   });
 
+  const typedTeachers = (teachers as any[]) || [];
+  const typedAvailableSlots = (availableSlots as any[]) || [];
+
   const bookingMutation = useMutation({
     mutationFn: async (bookingData: { slotId: string; studentName: string; collegeId: string }) => {
       const response = await apiRequest("POST", "/api/bookings", bookingData);
@@ -49,7 +52,7 @@ export default function StudentDashboard() {
     },
   });
 
-  const handleSlotSelect = (slot) => {
+  const handleSlotSelect = (slot: any) => {
     setSelectedSlot(slot);
     setShowBookingForm(true);
     // Smooth scroll to booking form
@@ -59,7 +62,7 @@ export default function StudentDashboard() {
   };
 
   const handleConfirmBooking = () => {
-    if (!studentName || !collegeId) {
+    if (!selectedSlot || !studentName || !collegeId) {
       toast({
         title: "Missing information",
         description: "Please fill in all required fields.",
@@ -69,7 +72,7 @@ export default function StudentDashboard() {
     }
 
     bookingMutation.mutate({
-      slotId: selectedSlot.id,
+      slotId: (selectedSlot as any).id,
       studentName,
       collegeId,
     });
@@ -83,11 +86,11 @@ export default function StudentDashboard() {
   };
 
   // Group available slots by teacher
-  const teachersWithAvailableSlots = teachers.filter(teacher => 
-    availableSlots.some(slot => slot.teacherId === teacher.id)
-  ).map(teacher => ({
+  const teachersWithAvailableSlots = typedTeachers.filter((teacher: any) => 
+    typedAvailableSlots.some((slot: any) => slot.teacherId === teacher.id)
+  ).map((teacher: any) => ({
     ...teacher,
-    availableSlots: availableSlots.filter(slot => slot.teacherId === teacher.id)
+    availableSlots: typedAvailableSlots.filter((slot: any) => slot.teacherId === teacher.id)
   }));
 
   return (
@@ -130,7 +133,7 @@ export default function StudentDashboard() {
           </div>
         ) : (
           <div className="dashboard-grid mb-6" data-testid="grid-faculty-cards">
-            {teachersWithAvailableSlots.map((teacher) => (
+            {teachersWithAvailableSlots.map((teacher: any) => (
               <FacultyCard
                 key={teacher.id}
                 teacher={teacher}
@@ -160,19 +163,19 @@ export default function StudentDashboard() {
                   <div>
                     <div className="text-gray-400 text-xs mb-1">Faculty</div>
                     <div className="text-yellow-400 font-medium text-sm" data-testid="text-selected-faculty">
-                      {selectedSlot.teacher?.name}
+                      {(selectedSlot as any)?.teacher?.name}
                     </div>
                   </div>
                   <div>
                     <div className="text-gray-400 text-xs mb-1">Date</div>
                     <div className="text-white font-medium text-sm" data-testid="text-selected-date">
-                      {selectedSlot.date}
+                      {(selectedSlot as any)?.date}
                     </div>
                   </div>
                   <div>
                     <div className="text-gray-400 text-xs mb-1">Time</div>
                     <div className="text-white font-medium text-sm" data-testid="text-selected-time">
-                      {selectedSlot.time}
+                      {(selectedSlot as any)?.time}
                     </div>
                   </div>
                 </div>

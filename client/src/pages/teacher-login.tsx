@@ -5,7 +5,11 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, LogIn, Loader2 } from "lucide-react";
 
-export default function TeacherLogin({ onLogin }) {
+interface TeacherLoginProps {
+  onLogin: (teacher: any) => void;
+}
+
+export default function TeacherLogin({ onLogin }: TeacherLoginProps) {
   const [, setLocation] = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

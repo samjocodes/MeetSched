@@ -84,7 +84,11 @@ export class MemStorage implements IStorage {
 
   async createTeacher(insertTeacher: InsertTeacher): Promise<Teacher> {
     const id = randomUUID();
-    const teacher: Teacher = { ...insertTeacher, id };
+    const teacher: Teacher = { 
+      ...insertTeacher, 
+      id,
+      department: insertTeacher.department ?? null
+    };
     this.teachers.set(id, teacher);
     return teacher;
   }

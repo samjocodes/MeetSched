@@ -3,11 +3,16 @@ import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, LogOut, Calendar, Mail, BarChart3, Clock, Trash2, Building, User } from "lucide-react";
+import { Plus, LogOut, Calendar, Mail, BarChart3, Clock, Trash2, Building, User, Loader2 } from "lucide-react";
 import StatCard from "@/components/StatCard";
 import SlotCard from "@/components/SlotCard";
 
-export default function TeacherDashboard({ teacher, onLogout }) {
+interface TeacherDashboardProps {
+  teacher: any;
+  onLogout: () => void;
+}
+
+export default function TeacherDashboard({ teacher, onLogout }: TeacherDashboardProps) {
   const [, setLocation] = useLocation();
   const [newSlotDate, setNewSlotDate] = useState("");
   const [newSlotTime, setNewSlotTime] = useState("");
@@ -18,6 +23,8 @@ export default function TeacherDashboard({ teacher, onLogout }) {
     queryKey: ["/api/teacher", teacher?.id, "slots"],
     enabled: !!teacher?.id,
   });
+
+  const typedSlots = (slots as any[]) || [];
 
   const createSlotMutation = useMutation({
     mutationFn: async (slotData: { teacherId: string; date: string; time: string }) => {
@@ -89,9 +96,9 @@ export default function TeacherDashboard({ teacher, onLogout }) {
     return null;
   }
 
-  const availableSlots = slots.filter(slot => !slot.isBooked);
-  const bookedSlots = slots.filter(slot => slot.isBooked);
-  const totalSlots = slots.length;
+  const availableSlots = typedSlots.filter((slot: any) => !slot.isBooked);
+  const bookedSlots = typedSlots.filter((slot: any) => slot.isBooked);
+  const totalSlots = typedSlots.length;
   const utilization = totalSlots > 0 ? Math.round((bookedSlots.length / totalSlots) * 100) : 0;
 
   return (
@@ -254,7 +261,7 @@ export default function TeacherDashboard({ teacher, onLogout }) {
               ) : availableSlots.length === 0 ? (
                 <p className="text-gray-400 text-sm text-center py-4">No available slots</p>
               ) : (
-                availableSlots.map((slot) => (
+                availableSlots.map((slot: any) => (
                   <SlotCard
                     key={slot.id}
                     slot={slot}
@@ -278,7 +285,7 @@ export default function TeacherDashboard({ teacher, onLogout }) {
               {bookedSlots.length === 0 ? (
                 <p className="text-gray-400 text-sm text-center py-4">No booked slots</p>
               ) : (
-                bookedSlots.map((slot) => (
+                bookedSlots.map((slot: any) => (
                   <div key={slot.id} className="slot-card">
                     <div className="flex justify-between items-center">
                       <div>
