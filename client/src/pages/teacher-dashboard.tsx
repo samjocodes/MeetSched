@@ -92,8 +92,20 @@ export default function TeacherDashboard({ teacher, onLogout }: TeacherDashboard
   };
 
   if (!teacher) {
-    setLocation("/teacher/login");
-    return null;
+    // Only redirect if we're sure there's no teacher - this prevents race conditions
+    setTimeout(() => {
+      if (!teacher) {
+        setLocation("/teacher/login");
+      }
+    }, 200);
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="icon-xl animate-spin mx-auto text-yellow-500 mb-4" />
+          <p className="text-gray-400">Loading dashboard...</p>
+        </div>
+      </div>
+    );
   }
 
   const availableSlots = typedSlots.filter((slot: any) => !slot.isBooked);

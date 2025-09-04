@@ -22,7 +22,6 @@ export default function TeacherLogin({ onLogin }: TeacherLoginProps) {
     },
     onSuccess: (data) => {
       onLogin(data.teacher);
-      setLocation("/teacher/dashboard");
       toast({
         title: "Login successful",
         description: `Welcome back, ${data.teacher.name}!`,
