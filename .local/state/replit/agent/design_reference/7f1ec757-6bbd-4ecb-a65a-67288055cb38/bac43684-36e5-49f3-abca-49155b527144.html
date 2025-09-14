@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Meeting Scheduler - Professional Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    popover: {
+                        DEFAULT: "var(--popover)",
+                        foreground: "var(--popover-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                    chart: {
+                        "1": "var(--chart-1)",
+                        "2": "var(--chart-2)",
+                        "3": "var(--chart-3)",
+                        "4": "var(--chart-4)",
+                        "5": "var(--chart-5)",
+                    }
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                    serif: ["var(--font-serif)"],
+                    mono: ["var(--font-mono)"],
+                }
+            },
+        }
+    };
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --background: hsl(0, 0%, 100%);
+            --foreground: hsl(0, 0%, 0%);
+            --card: hsl(0, 0%, 96.47%);
+            --card-foreground: hsl(0, 0%, 0%);
+            --popover: hsl(0, 0%, 100%);
+            --popover-foreground: hsl(0, 0%, 0%);
+            --primary: hsl(96, 85.19%, 73.53%);
+            --primary-foreground: hsl(0, 0%, 0%);
+            --secondary: hsl(0, 0%, 0%);
+            --secondary-foreground: hsl(0, 0%, 100%);
+            --muted: hsl(0, 0%, 96.08%);
+            --muted-foreground: hsl(0, 0%, 52.94%);
+            --accent: hsl(254.21, 100%, 92.55%);
+            --accent-foreground: hsl(0, 0%, 0%);
+            --destructive: hsl(2.04, 74.62%, 61.37%);
+            --destructive-foreground: hsl(0 0% 100%);
+            --border: hsl(0, 0%, 96.47%);
+            --input: hsl(0, 0%, 0%);
+            --ring: hsl(0, 0%, 0%);
+            --radius: 0rem;
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Inter', sans-serif;
+            --font-mono: 'Inter', monospace;
+            
+            /* Custom color palette */
+            --gold: hsl(51, 78%, 52%);
+            --gold-light: hsl(50, 88%, 80%);
+            --gold-dark: hsl(45, 72%, 38%);
+            --black: hsl(0, 0%, 0%);
+            --gray-dark: hsl(0, 0%, 10%);
+            --gray-medium: hsl(0, 0%, 18%);
+            --gray-light: hsl(0, 0%, 25%);
+            --white: hsl(0, 0%, 100%);
+            --text-primary: hsl(0, 0%, 100%);
+            --text-secondary: hsl(0, 0%, 70%);
+            --text-muted: hsl(0, 0%, 50%);
+        }
+
+        .dark {
+            --background: hsl(0, 0%, 0%);
+            --foreground: hsl(200, 6.67%, 91.18%);
+            --card: hsl(228, 9.80%, 10%);
+            --card-foreground: hsl(0, 0%, 85.10%);
+            --primary: hsl(203.77, 87.60%, 52.55%);
+            --primary-foreground: hsl(0, 0%, 100%);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--black) 0%, var(--gray-dark) 100%);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* Professional Container - Fixed sizing */
+        .professional-container {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(212, 175, 55, 0.1);
+            padding: 1.5rem;
+            max-width: 100%;
+        }
+
+        /* Fixed Icon Sizing */
+        .icon-xs { width: 0.875rem; height: 0.875rem; }
+        .icon-sm { width: 1rem; height: 1rem; }
+        .icon-md { width: 1.25rem; height: 1.25rem; }
+        .icon-lg { width: 1.5rem; height: 1.5rem; }
+        .icon-xl { width: 2rem; height: 2rem; }
+
+        /* Gold Gradient Text */
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Professional Buttons - Compact sizing */
+        .btn-professional {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            min-height: 2.5rem;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: var(--black);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-white {
+            background: var(--white);
+            color: var(--black);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-black {
+            background: var(--black);
+            color: var(--white);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Professional Cards - Compact sizing */
+        .professional-card {
+            background: linear-gradient(135deg, var(--gray-dark) 0%, var(--gray-medium) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .professional-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Slot Cards - Fixed compact sizing */
+        .slot-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 0.875rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 3.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .slot-card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            background: rgba(0, 0, 0, 0.8);
+            transform: translateY(-1px);
+        }
+
+        .slot-card.selected {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-color: var(--gold);
+            color: var(--black);
+        }
+
+        /* Status Badges - Compact */
+        .status-badge {
+            padding: 0.25rem 0.625rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .status-available {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .status-booked {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: var(--black);
+        }
+
+        /* Stats Cards - Compact */
+        .stat-card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            min-height: 5rem;
+        }
+
+        .stat-number {
+            font-size: 1.875rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Typography - Responsive but contained */
+        .heading-primary {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .heading-secondary {
+            font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Role Cards - Compact */
+        .role-card {
+            background: linear-gradient(135deg, var(--gray-dark) 0%, var(--gray-medium) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            min-height: 12rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .role-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .role-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Professional Input */
+        .professional-input {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--white);
+            font-size: 0.875rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .professional-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Faculty Card - Fixed sizing */
+        .faculty-card {
+            background: linear-gradient(135deg, var(--gray-dark) 0%, var(--gray-medium) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            min-height: 4rem;
+        }
+
+        .faculty-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            font-size: 1.25rem;
+        }
+
+        .faculty-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 0.125rem;
+        }
+
+        .faculty-department {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Grid Improvements */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .booking-slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-up {
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .professional-container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .role-card {
+                padding: 1.5rem;
+                min-height: 10rem;
+            }
+            
+            .role-emoji {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- @COMPONENT: App [Main application container with role-based routing] -->
+    <div class="min-h-screen">
+        <!-- Role Selection Screen -->
+        <div id="roleSelection" class="min-h-screen flex items-center justify-center p-4">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(212,175,55,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="relative z-10 text-center max-w-5xl mx-auto fade-in">
+                <!-- Header -->
+                <div class="mb-12">
+                    <h1 class="heading-primary gold-gradient mb-4">
+                        College Meeting Scheduler
+                    </h1>
+                    <div class="w-16 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto mb-4 rounded-full"></div>
+                    <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                        Streamline faculty-student communications with our professional scheduling platform
+                    </p>
+                </div>
+                
+                <!-- Role Cards -->
+                <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-8">
+                    <!-- Teacher Card -->
+                    <!-- @FUNCTIONALITY: Should navigate to teacher login on click -->
+                    <div class="role-card group" onclick="showTeacherLogin()">
+                        <div class="role-emoji">👩‍🏫</div>
+                        <h2 class="text-xl font-semibold gold-gradient mb-2">Faculty Portal</h2>
+                        <p class="text-gray-400 mb-4 text-sm">
+                            Manage your availability, schedule meetings, and connect with students efficiently
+                        </p>
+                        <div class="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                            <span>✓ Time Management</span>
+                            <span>•</span>
+                            <span>✓ Student Communication</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Student Card -->
+                    <!-- @FUNCTIONALITY: Should navigate to student dashboard on click -->
+                    <div class="role-card group" onclick="showStudentDashboard()">
+                        <div class="role-emoji">👨‍🎓</div>
+                        <h2 class="text-xl font-semibold gold-gradient mb-2">Student Portal</h2>
+                        <p class="text-gray-400 mb-4 text-sm">
+                            Book appointments with faculty members and manage your academic consultations
+                        </p>
+                        <div class="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                            <span>✓ Easy Booking</span>
+                            <span>•</span>
+                            <span>✓ Faculty Directory</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="pt-6 border-t border-gray-800">
+                    <p class="text-gray-600 text-sm">
+                        Professional scheduling solution for academic institutions
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher Login Screen -->
+        <div id="teacherLogin" class="min-h-screen flex items-center justify-center p-4 hidden">
+            <div class="relative z-10 w-full max-w-md fade-in">
+                <!-- Back Button -->
+                <button onclick="showRoleSelection()" class="mb-6 flex items-center text-gray-400 hover:text-yellow-500 transition-colors group">
+                    <i class="fas fa-arrow-left icon-sm mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Role Selection
+                </button>
+
+                <!-- Login Form -->
+                <div class="professional-container">
+                    <div class="text-center mb-6">
+                        <div class="text-4xl mb-3">👩‍🏫</div>
+                        <h1 class="text-2xl font-bold gold-gradient mb-1">Faculty Login</h1>
+                        <p class="text-gray-400 text-sm">Access your teaching portal</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                            <input type="email" placeholder="Enter your faculty email" class="professional-input" data-mock="true">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                            <input type="password" placeholder="Enter your password" class="professional-input" data-mock="true">
+                        </div>
+                        
+                        <button onclick="showTeacherDashboard()" class="w-full btn-professional btn-gold">
+                            <i class="fas fa-sign-in-alt icon-sm"></i>
+                            Sign In
+                        </button>
+                    </div>
+
+                    <!-- Demo Credentials -->
+                    <div class="mt-4 p-3 bg-black bg-opacity-60 rounded-lg border border-yellow-500 border-opacity-20">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-info-circle icon-sm text-yellow-500 mr-2"></i>
+                            <span class="text-yellow-400 font-medium text-sm">Demo Credentials</span>
+                        </div>
+                        <div class="space-y-1 text-xs">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">📧 Email:</span>
+                                <span class="text-white font-mono">mathur@college.edu</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">🔒 Password:</span>
+                                <span class="text-white font-mono">teacher123</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher Dashboard -->
+        <div id="teacherDashboard" class="min-h-screen p-4 hidden">
+            <div class="max-w-6xl mx-auto fade-in">
+                <!-- Header -->
+                <div class="professional-container mb-6">
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div>
+                            <h1 class="heading-primary gold-gradient mb-1">
+                                Welcome, Prof. Mathur
+                            </h1>
+                            <div class="flex items-center space-x-3 text-gray-400 text-sm">
+                                <span class="flex items-center">
+                                    <i class="fas fa-building icon-sm mr-1 text-yellow-500"></i>
+                                    Mathematics Department
+                                </span>
+                                <span>•</span>
+                                <span class="flex items-center">
+                                    <i class="fas fa-user icon-sm mr-1 text-yellow-500"></i>
+                                    Faculty Portal
+                                </span>
+                            </div>
+                        </div>
+                        <button onclick="showRoleSelection()" class="btn-professional btn-black">
+                            <i class="fas fa-sign-out-alt icon-sm"></i>
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Overview -->
+                <div class="dashboard-stats mb-6">
+                    <div class="stat-card">
+                        <div class="stat-number" data-bind="totalSlots.count">8</div>
+                        <div class="text-gray-400 text-xs font-medium">Total Slots</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-green-400" data-bind="availableSlots.count">5</div>
+                        <div class="text-gray-400 text-xs font-medium">Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-blue-400" data-bind="bookedSlots.count">3</div>
+                        <div class="text-gray-400 text-xs font-medium">Booked</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-yellow-500" data-bind="utilization.percentage">38%</div>
+                        <div class="text-gray-400 text-xs font-medium">Utilization</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid mb-6">
+                    <!-- Add New Slot -->
+                    <div class="professional-card slide-up">
+                        <h2 class="heading-secondary gold-gradient mb-4 flex items-center">
+                            <i class="fas fa-plus icon-md mr-2 text-yellow-500"></i>
+                            Add Available Slot
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Date</label>
+                                <input type="date" class="professional-input" data-mock="true">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Time Slot</label>
+                                <input type="text" placeholder="e.g., 9:00 - 10:00" class="professional-input" data-mock="true">
+                            </div>
+                            
+                            <button class="w-full btn-professional btn-gold" data-event="click:handleAddSlot">
+                                <i class="fas fa-plus icon-sm"></i>
+                                Create Slot
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="professional-card slide-up">
+                        <h2 class="heading-secondary gold-gradient mb-4 flex items-center">
+                            <i class="fas fa-bolt icon-md mr-2 text-yellow-500"></i>
+                            Quick Actions
+                        </h2>
+                        
+                        <div class="space-y-3">
+                            <button class="w-full btn-professional btn-white text-left flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <i class="fas fa-calendar icon-sm mr-2"></i>
+                                    View Calendar
+                                </span>
+                                <i class="fas fa-chevron-right icon-xs"></i>
+                            </button>
+                            
+                            <button class="w-full btn-professional btn-white text-left flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <i class="fas fa-envelope icon-sm mr-2"></i>
+                                    Send Notifications
+                                </span>
+                                <i class="fas fa-chevron-right icon-xs"></i>
+                            </button>
+                            
+                            <button class="w-full btn-professional btn-white text-left flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <i class="fas fa-chart-bar icon-sm mr-2"></i>
+                                    View Reports
+                                </span>
+                                <i class="fas fa-chevron-right icon-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Available Slots -->
+                    <div class="professional-card slide-up">
+                        <h2 class="heading-secondary text-green-400 mb-4 flex items-center">
+                            <div class="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+                            Available Slots (5)
+                        </h2>
+                        
+                        <div class="space-y-2 max-h-72 overflow-y-auto">
+                            <!-- @MAP: availableSlots.map(slot => ( -->
+                            <div class="slot-card flex justify-between items-center" data-mock="true">
+                                <div>
+                                    <div class="font-medium text-white text-sm">2024-01-15</div>
+                                    <div class="text-green-400 text-xs flex items-center">
+                                        <i class="fas fa-clock icon-xs mr-1"></i>
+                                        9:00 - 10:00
+                                    </div>
+                                </div>
+                                <button class="btn-professional bg-red-600 hover:bg-red-700 text-white px-2 py-1 text-xs" data-event="click:removeSlot">
+                                    <i class="fas fa-trash icon-xs"></i>
+                                </button>
+                            </div>
+                            <div class="slot-card flex justify-between items-center" data-mock="true">
+                                <div>
+                                    <div class="font-medium text-white text-sm">2024-01-16</div>
+                                    <div class="text-green-400 text-xs flex items-center">
+                                        <i class="fas fa-clock icon-xs mr-1"></i>
+                                        2:00 - 3:00
+                                    </div>
+                                </div>
+                                <button class="btn-professional bg-red-600 hover:bg-red-700 text-white px-2 py-1 text-xs" data-event="click:removeSlot">
+                                    <i class="fas fa-trash icon-xs"></i>
+                                </button>
+                            </div>
+                            <div class="slot-card flex justify-between items-center" data-mock="true">
+                                <div>
+                                    <div class="font-medium text-white text-sm">2024-01-17</div>
+                                    <div class="text-green-400 text-xs flex items-center">
+                                        <i class="fas fa-clock icon-xs mr-1"></i>
+                                        10:00 - 11:00
+                                    </div>
+                                </div>
+                                <button class="btn-professional bg-red-600 hover:bg-red-700 text-white px-2 py-1 text-xs" data-event="click:removeSlot">
+                                    <i class="fas fa-trash icon-xs"></i>
+                                </button>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+
+                    <!-- Booked Slots -->
+                    <div class="professional-card slide-up">
+                        <h2 class="heading-secondary text-blue-400 mb-4 flex items-center">
+                            <div class="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
+                            Booked Slots (3)
+                        </h2>
+                        
+                        <div class="space-y-2 max-h-72 overflow-y-auto">
+                            <!-- @MAP: bookedSlots.map(slot => ( -->
+                            <div class="slot-card" data-mock="true">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-medium text-white text-sm">2024-01-15</div>
+                                        <div class="text-blue-400 text-xs flex items-center">
+                                            <i class="fas fa-clock icon-xs mr-1"></i>
+                                            11:00 - 12:00
+                                        </div>
+                                    </div>
+                                    <span class="status-badge status-booked">Booked</span>
+                                </div>
+                                <div class="mt-2 pt-2 border-t border-gray-600">
+                                    <div class="text-xs text-gray-400">Student: <span class="text-white" data-bind="student.name">John Doe</span></div>
+                                    <div class="text-xs text-gray-400">ID: <span class="text-white" data-bind="student.id">CS2023001</span></div>
+                                </div>
+                            </div>
+                            <div class="slot-card" data-mock="true">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-medium text-white text-sm">2024-01-16</div>
+                                        <div class="text-blue-400 text-xs flex items-center">
+                                            <i class="fas fa-clock icon-xs mr-1"></i>
+                                            12:00 - 1:00
+                                        </div>
+                                    </div>
+                                    <span class="status-badge status-booked">Booked</span>
+                                </div>
+                                <div class="mt-2 pt-2 border-t border-gray-600">
+                                    <div class="text-xs text-gray-400">Student: <span class="text-white" data-bind="student.name">Jane Smith</span></div>
+                                    <div class="text-xs text-gray-400">ID: <span class="text-white" data-bind="student.id">AI2023005</span></div>
+                                </div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Dashboard -->
+        <div id="studentDashboard" class="min-h-screen p-4 hidden">
+            <div class="max-w-6xl mx-auto fade-in">
+                <!-- Header -->
+                <div class="professional-container mb-6">
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div>
+                            <div class="flex items-center mb-3">
+                                <button onclick="showRoleSelection()" class="mr-3 flex items-center text-gray-400 hover:text-yellow-500 transition-colors group">
+                                    <i class="fas fa-arrow-left icon-sm mr-1 group-hover:-translate-x-1 transition-transform"></i>
+                                    Back
+                                </button>
+                            </div>
+                            <h1 class="heading-primary gold-gradient mb-1">
+                                Book Faculty Meeting
+                            </h1>
+                            <p class="text-gray-400 text-sm">
+                                Schedule your consultation with available faculty members
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-yellow-500">3</div>
+                            <div class="text-gray-400 text-xs">Available Faculty</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Faculty Cards -->
+                <div class="dashboard-grid mb-6">
+                    <!-- @MAP: facultyWithSlots.map(({ teacher, slots }) => ( -->
+                    <div class="professional-card slide-up" data-mock="true">
+                        <div class="text-center mb-4">
+                            <div class="faculty-avatar mx-auto mb-3">
+                                👨‍🏫
+                            </div>
+                            <h2 class="text-lg font-semibold gold-gradient mb-1" data-bind="teacher.name">Prof. Mathur</h2>
+                            <p class="text-gray-400 text-sm mb-2" data-bind="teacher.subject">Mathematics</p>
+                            <div class="flex items-center justify-center text-green-400 text-xs font-medium">
+                                <i class="fas fa-clock icon-xs mr-1"></i>
+                                <span data-bind="slots.length">3</span> available slots
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <!-- @MAP: slots.map(slot => ( -->
+                            <div class="slot-card cursor-pointer" onclick="selectSlot(this)" data-slot-id="1" data-mock="true">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm" data-bind="slot.date">2024-01-15</div>
+                                        <div class="text-xs opacity-90 flex items-center mt-1">
+                                            <i class="fas fa-clock icon-xs mr-1"></i>
+                                            <span data-bind="slot.time">9:00 - 10:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slot-card cursor-pointer" onclick="selectSlot(this)" data-slot-id="2" data-mock="true">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">2024-01-16</div>
+                                        <div class="text-xs opacity-90 flex items-center mt-1">
+                                            <i class="fas fa-clock icon-xs mr-1"></i>
+                                            2:00 - 3:00
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+
+                    <div class="professional-card slide-up" data-mock="true">
+                        <div class="text-center mb-4">
+                            <div class="faculty-avatar mx-auto mb-3">
+                                👩‍🏫
+                            </div>
+                            <h2 class="text-lg font-semibold gold-gradient mb-1">Prof. Singh</h2>
+                            <p class="text-gray-400 text-sm mb-2">Data Structures & Algorithms</p>
+                            <div class="flex items-center justify-center text-green-400 text-xs font-medium">
+                                <i class="fas fa-clock icon-xs mr-1"></i>
+                                2 available slots
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="slot-card cursor-pointer" onclick="selectSlot(this)" data-slot-id="3" data-mock="true">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">2024-01-15</div>
+                                        <div class="text-xs opacity-90 flex items-center mt-1">
+                                            <i class="fas fa-clock icon-xs mr-1"></i>
+                                            10:00 - 11:00
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slot-card cursor-pointer" onclick="selectSlot(this)" data-slot-id="4" data-mock="true">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">2024-01-16</div>
+                                        <div class="text-xs opacity-90 flex items-center mt-1">
+                                            <i class="fas fa-clock icon-xs mr-1"></i>
+                                            1:00 - 2:00
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="professional-card slide-up" data-mock="true">
+                        <div class="text-center mb-4">
+                            <div class="faculty-avatar mx-auto mb-3">
+                                👨‍🏫
+                            </div>
+                            <h2 class="text-lg font-semibold gold-gradient mb-1">Prof. Verma</h2>
+                            <p class="text-gray-400 text-sm mb-2">Machine Learning</p>
+                            <div class="flex items-center justify-center text-green-400 text-xs font-medium">
+                                <i class="fas fa-clock icon-xs mr-1"></i>
+                                1 available slot
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="slot-card cursor-pointer" onclick="selectSlot(this)" data-slot-id="5" data-mock="true">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">2024-01-15</div>
+                                        <div class="text-xs opacity-90 flex items-center mt-1">
+                                            <i class="fas fa-clock icon-xs mr-1"></i>
+                                            9:30 - 10:30
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+
+                <!-- Booking Form -->
+                <div id="bookingForm" class="max-w-2xl mx-auto hidden">
+                    <div class="professional-container slide-up">
+                        <h3 class="heading-secondary gold-gradient mb-4 text-center flex items-center justify-center">
+                            <i class="fas fa-check icon-md mr-2 text-yellow-500"></i>
+                            Confirm Your Booking
+                        </h3>
+                        
+                        <!-- Selected Slot Summary -->
+                        <div class="professional-card !bg-black !bg-opacity-60 mb-6">
+                            <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                                <i class="fas fa-info-circle icon-sm mr-2 text-yellow-500"></i>
+                                Booking Details
+                            </h4>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <div class="text-gray-400 text-xs mb-1">Faculty</div>
+                                    <div class="text-yellow-400 font-medium text-sm" id="selectedFaculty">Prof. Mathur</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-400 text-xs mb-1">Date</div>
+                                    <div class="text-white font-medium text-sm" id="selectedDate">2024-01-15</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-400 text-xs mb-1">Time</div>
+                                    <div class="text-white font-medium text-sm" id="selectedTime">9:00 - 10:00</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Student Information Form -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">
+                                    Full Name <span class="text-red-400">*</span>
+                                </label>
+                                <input type="text" placeholder="Enter your full name" class="professional-input" data-mock="true" id="studentName">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">
+                                    College ID <span class="text-red-400">*</span>
+                                </label>
+                                <input type="text" placeholder="Enter your college ID" class="professional-input" data-mock="true" id="collegeId">
+                            </div>
+                            
+                            <div class="flex flex-col sm:flex-row gap-3 pt-3">
+                                <button onclick="cancelBooking()" class="flex-1 btn-professional btn-white" data-event="click:cancelBooking">
+                                    <i class="fas fa-times icon-sm"></i>
+                                    Cancel
+                                </button>
+                                <button onclick="confirmBooking()" class="flex-1 btn-professional btn-gold" data-event="click:confirmBooking">
+                                    <i class="fas fa-check icon-sm"></i>
+                                    Confirm Booking
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Terms Notice -->
+                        <div class="mt-6 p-3 bg-gray-900 bg-opacity-50 rounded-lg border border-gray-700">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle icon-sm text-yellow-500 mr-2 mt-0.5 flex-shrink-0"></i>
+                                <div class="text-xs text-gray-400">
+                                    <p class="mb-2">By confirming this booking, you agree to attend the scheduled meeting on time. Cancellations must be made at least 2 hours in advance.</p>
+                                    <p>You will receive an email confirmation with meeting details and any additional instructions from the faculty member.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: App -->
+
+    <script>
+        // Navigation functions
+        function showRoleSelection() {
+            document.getElementById('roleSelection').classList.remove('hidden');
+            document.getElementById('teacherLogin').classList.add('hidden');
+            document.getElementById('teacherDashboard').classList.add('hidden');
+            document.getElementById('studentDashboard').classList.add('hidden');
+        }
+
+        function showTeacherLogin() {
+            document.getElementById('roleSelection').classList.add('hidden');
+            document.getElementById('teacherLogin').classList.remove('hidden');
+            document.getElementById('teacherDashboard').classList.add('hidden');
+            document.getElementById('studentDashboard').classList.add('hidden');
+        }
+
+        function showTeacherDashboard() {
+            document.getElementById('roleSelection').classList.add('hidden');
+            document.getElementById('teacherLogin').classList.add('hidden');
+            document.getElementById('teacherDashboard').classList.remove('hidden');
+            document.getElementById('studentDashboard').classList.add('hidden');
+        }
+
+        function showStudentDashboard() {
+            document.getElementById('roleSelection').classList.add('hidden');
+            document.getElementById('teacherLogin').classList.add('hidden');
+            document.getElementById('teacherDashboard').classList.add('hidden');
+            document.getElementById('studentDashboard').classList.remove('hidden');
+        }
+
+        // Slot selection functionality
+        function selectSlot(slotElement) {
+            // Remove previous selections
+            document.querySelectorAll('.slot-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked slot
+            slotElement.classList.add('selected');
+            
+            // Show booking form
+            document.getElementById('bookingForm').classList.remove('hidden');
+            
+            // Scroll to booking form
+            document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
+            
+            // TODO: Update booking form with selected slot details
+        }
+
+        function cancelBooking() {
+            document.getElementById('bookingForm').classList.add('hidden');
+            document.querySelectorAll('.slot-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+        }
+
+        function confirmBooking() {
+            const studentName = document.getElementById('studentName').value;
+            const collegeId = document.getElementById('collegeId').value;
+            
+            if (!studentName || !collegeId) {
+                alert('⚠️ Please fill all fields!');
+                return;
+            }
+            
+            // TODO: Implement booking confirmation logic
+            alert('✅ Booking confirmed! Confirmation details have been sent to your email.');
+            
+            // Reset form
+            document.getElementById('studentName').value = '';
+            document.getElementById('collegeId').value = '';
+            cancelBooking();
+        }
+
+        // Initialize with role selection
+        document.addEventListener('DOMContentLoaded', function() {
+            showRoleSelection();
+        });
+
+        // Demo functionality for teacher dashboard
+        function handleAddSlot() {
+            // TODO: Implement add slot functionality
+            alert('✅ Slot added successfully!');
+        }
+
+        function removeSlot() {
+            // TODO: Implement remove slot functionality
+            if (confirm('⚠️ Are you sure you want to remove this slot?')) {
+                alert('✅ Slot removed successfully!');
+            }
+        }
+    </script>
+</body>
+</html>
